@@ -1,6 +1,10 @@
 Relative buffers
 ================
 
+.. image:: https://travis-ci.org/proofit404/relative-buffers.png
+    :target: https://travis-ci.org/proofit404/relative-buffers
+    :alt: Build Status
+
 Emacs buffers naming convention.
 
 Installation
