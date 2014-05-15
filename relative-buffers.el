@@ -5,6 +5,7 @@
 ;; Author: Malyshev Artem <proofit404@gmail.com>
 ;; URL: https://github.com/proofit404/relative-buffers
 ;; Version: 0.0.1
+;; Package-Requires: ((s "1.9.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,6 +25,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 's)
 
 (defun relative-buffers-name ()
   "Give current buffer a relative name."
