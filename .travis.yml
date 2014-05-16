@@ -2,7 +2,7 @@ language: emacs-lisp
 
 env:
   global:
-    - CASK=$HOME/.cask/bin/cask
+    - PATH=$HOME/.cask/bin:$PATH
 
 before_install:
   - sudo add-apt-repository -y ppa:cassou/emacs
@@ -12,7 +12,7 @@ before_install:
   - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
 
 install:
-  - $CASK install
+  - cask install
 
 script:
-  - $CASK exec ert-runner
+  - cask exec ert-runner
