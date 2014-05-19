@@ -36,15 +36,16 @@
 
 (defun relative-buffers-python-package ()
   "Python module relative to package."
-  (let (name-space-list)
-    (when (not (string= "__init__.py" (file-name-nondirectory (buffer-file-name))))
-      (setq name-space-list (list (file-name-sans-extension (buffer-file-name)))))
-    (cd (file-name-directory (buffer-file-name)))
-    (while (file-exists-p (file-truename "__init__.py"))
-      (add-to-list 'name-space-list (directory-file-name default-directory))
-      (cd ".."))
-    (cd (file-name-directory (buffer-file-name)))
-    (mapconcat 'file-name-nondirectory name-space-list ".")))
+  (when (file-exists-p "__init__.py")
+    (let (name-space-list)
+      (when (not (string= "__init__.py" (file-name-nondirectory (buffer-file-name))))
+        (setq name-space-list (list (file-name-sans-extension (buffer-file-name)))))
+      (cd (file-name-directory (buffer-file-name)))
+      (while (file-exists-p (file-truename "__init__.py"))
+        (add-to-list 'name-space-list (directory-file-name default-directory))
+        (cd ".."))
+      (cd (file-name-directory (buffer-file-name)))
+      (mapconcat 'file-name-nondirectory name-space-list "."))))
 
 (defun relative-buffers-directory ()
   "Directory relative to project root."
