@@ -51,8 +51,8 @@
 (defun relative-buffers-directory ()
   "Directory relative to project root."
   (let ((root (relative-buffers-project-root))
-        (directory (file-truename dired-directory)))
-    (unless (s-equals-p root directory)
+        (directory (f-full dired-directory)))
+    (when (and root (f-ancestor-of? root directory))
       (s-chop-prefix root directory))))
 
 (defun relative-buffers-file-name ()

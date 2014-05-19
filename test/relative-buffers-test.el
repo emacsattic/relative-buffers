@@ -31,10 +31,18 @@
   (should (s-equals? (relative-buffers-directory)
                      "subdir/")))
 
+(ert-deftest test-dired-simple-directory ()
+  (dired (f-join (f-root) "tmp"))
+  (should (null (relative-buffers-directory))))
+
 (ert-deftest test-project-root ()
   (find-file "test/fixtures/vc/subdir/dir/test")
   (should (s-equals? (relative-buffers-project-root)
                      (f-slash (f-join test-directory "fixtures" "vc")))))
+
+(ert-deftest test-not-project-root ()
+  (dired (f-join (f-root) "tmp"))
+  (should (null (relative-buffers-project-root))))
 
 (provide 'relative-buffers-test)
 
