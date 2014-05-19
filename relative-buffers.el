@@ -5,7 +5,7 @@
 ;; Author: Malyshev Artem <proofit404@gmail.com>
 ;; URL: https://github.com/proofit404/relative-buffers
 ;; Version: 0.0.1
-;; Package-Requires: ((s "1.9.0"))
+;; Package-Requires: ((s "1.9.0") (f "0.16.2"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 
 (require 'cl-lib)
 (require 's)
+(require 'f)
 
 (defun relative-buffers-name ()
   "Give current buffer a relative name."
@@ -62,7 +63,9 @@
 
 (defun relative-buffers-project-root ()
   "Return project root for different VCS."
-  "/home/proofit404/Data/relative-buffers/test/fixtures/vc/")
+  (let ((root (or (locate-dominating-file default-directory ".git")
+                  (locate-dominating-file default-directory ".hg"))))
+    (and root (f-full root))))
 
 (provide 'relative-buffers)
 

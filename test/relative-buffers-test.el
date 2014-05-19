@@ -7,6 +7,10 @@
 (require 'relative-buffers)
 (require 'ert)
 (require 's)
+(require 'f)
+
+(defvar test-directory (f-dirname load-file-name)
+  "Current directory.")
 
 (ert-deftest test-python-package ()
   (find-file "test/fixtures/python/package/subpackage/module.py")
@@ -26,6 +30,11 @@
   (dired "test/fixtures/vc/subdir")
   (should (s-equals? (relative-buffers-directory)
                      "subdir/")))
+
+(ert-deftest test-project-root ()
+  (find-file "test/fixtures/vc/subdir/dir/test")
+  (should (s-equals? (relative-buffers-project-root)
+                     (f-slash (f-join test-directory "fixtures" "vc")))))
 
 (provide 'relative-buffers-test)
 
