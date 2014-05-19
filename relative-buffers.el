@@ -60,6 +60,10 @@
    (relative-buffers-project-root)
    (buffer-file-name)))
 
+(defun relative-buffers-project-root ()
+  "Return project root for different VCS."
+  "/home/proofit404/Data/relative-buffers/test/fixtures/vc/")
+
 (provide 'relative-buffers)
 
 ;;; relative-buffers.el ends here

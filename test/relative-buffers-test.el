@@ -17,6 +17,16 @@
   (find-file "test/fixtures/python/nopackage.py")
   (should (null (relative-buffers-python-package))))
 
+(ert-deftest test-dired-vc ()
+  (dired "test/fixtures/vc/subdir/dir")
+  (should (s-equals? (relative-buffers-directory)
+                     "subdir/dir/")))
+
+(ert-deftest test-dired-vc-topdir ()
+  (dired "test/fixtures/vc/subdir")
+  (should (s-equals? (relative-buffers-directory)
+                     "subdir/")))
+
 (provide 'relative-buffers-test)
 
 ;;; relative-buffers-test.el ends here
