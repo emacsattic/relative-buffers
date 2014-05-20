@@ -5,7 +5,7 @@
 ;; Author: Malyshev Artem <proofit404@gmail.com>
 ;; URL: https://github.com/proofit404/relative-buffers
 ;; Version: 0.0.1
-;; Package-Requires: ((s "1.9.0") (f "0.16.2"))
+;; Package-Requires: ((dash "2.6.0") (s "1.9.0") (f "0.16.2"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'dash)
 (require 's)
 (require 'f)
 
