@@ -28,6 +28,9 @@
 (require 's)
 (require 'f)
 
+(defvar relative-buffers-project-markers '(".git" ".hg")
+  "List of files marked it directory as project root.")
+
 (defun relative-buffers-name ()
   "Give current buffer a relative name."
   (cl-case major-mode
@@ -63,8 +66,11 @@
 
 (defun relative-buffers-project-root ()
   "Return project root for different VCS."
-  (let ((root (or (locate-dominating-file default-directory ".git")
-                  (locate-dominating-file default-directory ".hg"))))
+  (let* ((markers relative-buffers-project-markers)
+         (projects (--map (locate-dominating-file default-directory it) markers))
+         (roots (-remove 'null projects))
+         (dipper-roots (-sort 'f-descendant-of? roots))
+         (root (car dipper-roots)))
     (and root (f-full root))))
 
 (provide 'relative-buffers)
