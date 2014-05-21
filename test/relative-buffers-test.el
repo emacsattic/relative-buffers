@@ -49,6 +49,12 @@
   (find-file (f-join (f-root) "tmp" "simple"))
   (should (null (relative-buffers-file-name))))
 
+(ert-deftest test-file-name-without-file ()
+  (let ((default-directory (f-full "test/fixtures/vc/subdir/dir/test")))
+    (switch-to-buffer (generate-new-buffer "foo"))
+    (should (null (buffer-file-name)))
+    (should (null (relative-buffers-file-name)))))
+
 (ert-deftest test-project-root ()
   (find-file "test/fixtures/vc/subdir/dir/test")
   (should (s-equals? (relative-buffers-project-root)
