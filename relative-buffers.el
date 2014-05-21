@@ -32,6 +32,22 @@
 (defvar relative-buffers-project-markers '(".git" ".hg")
   "List of files marked it directory as project root.")
 
+;;;###autoload
+(define-minor-mode relative-buffers-mode
+  "Name your buffer relatively to project.
+This mode support a lot of naming conventions.
+Python buffer named as a module relative to package.
+Project file and directories named relative to project root directory."
+  :lighter ""
+  (when relative-buffers-mode
+    (let ((newname (relative-buffers-name)))
+      (and newname (rename-buffer newname)))))
+
+;;;###autoload
+(define-globalized-minor-mode global-relative-buffers-mode
+  relative-buffers-mode
+  relative-buffers-mode)
+
 (defun relative-buffers-name ()
   "Give current buffer a relative name."
   (cl-case major-mode
