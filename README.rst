@@ -7,6 +7,10 @@ Relative buffers
 
 Emacs buffers naming convention.
 
+.. figure:: static/dired.png
+.. figure:: static/file-name.png
+.. figure:: static/python-module.png
+
 Installation
 ------------
 
