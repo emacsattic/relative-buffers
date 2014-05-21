@@ -17,6 +17,11 @@
   (should (s-equals? (relative-buffers-python-package)
                      "package.subpackage.module")))
 
+(ert-deftest test-python-package-init ()
+  (find-file "test/fixtures/python/package/__init__.py")
+  (should (s-equals? (relative-buffers-python-package)
+                     "package")))
+
 (ert-deftest test-python-script ()
   (find-file "test/fixtures/python/nopackage.py")
   (should (null (relative-buffers-python-package))))
@@ -34,6 +39,15 @@
 (ert-deftest test-dired-simple-directory ()
   (dired (f-join (f-root) "tmp"))
   (should (null (relative-buffers-directory))))
+
+(ert-deftest test-file-name-vc ()
+  (find-file "test/fixtures/vc/subdir/dir/test")
+  (should (s-equals? (relative-buffers-file-name)
+                     "subdir/dir/test")))
+
+(ert-deftest test-file-name-simple-file ()
+  (find-file (f-join (f-root) "tmp" "simple"))
+  (should (null (relative-buffers-file-name))))
 
 (ert-deftest test-project-root ()
   (find-file "test/fixtures/vc/subdir/dir/test")

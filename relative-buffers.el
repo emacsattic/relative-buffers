@@ -61,9 +61,8 @@
 
 (defun relative-buffers-file-name ()
   "File name relative to project root."
-  (s-chop-prefix
-   (relative-buffers-project-root)
-   (buffer-file-name)))
+  (--when-let (relative-buffers-project-root)
+    (s-chop-prefix it (buffer-file-name))))
 
 (defun relative-buffers-project-root ()
   "Return project root for different VCS."
