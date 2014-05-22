@@ -64,6 +64,21 @@
   (dired (f-join (f-root) "tmp"))
   (should (null (relative-buffers-project-root))))
 
+(ert-deftest test-open-differnt-files-with-same-name ()
+  "Check if renaming work correctly for complex layout.
+- each file has same name
+- each file has same relative path
+- each file placed in different project
+README files on top of any vcs project root may cause this error."
+  (unwind-protect
+      (progn
+        (global-relative-buffers-mode +1)
+        (find-file "test/fixtures/same-name/a/README.rst")
+        (find-file "test/fixtures/same-name/b/README.rst")
+        (should (get-buffer "README.rst<2>")))
+    (ignore-errors
+      (global-relative-buffers-mode -1))))
+
 (provide 'relative-buffers-test)
 
 ;;; relative-buffers-test.el ends here
