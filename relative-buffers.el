@@ -51,7 +51,7 @@ Project file and directories named relative to project root directory."
   :lighter ""
   (when relative-buffers-mode
     (let ((newname (relative-buffers-name)))
-      (and newname (rename-buffer (generate-new-buffer-name newname))))))
+      (and newname (rename-buffer newname t)))))
 
 ;;;###autoload
 (define-globalized-minor-mode global-relative-buffers-mode
