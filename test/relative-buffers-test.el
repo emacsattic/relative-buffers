@@ -13,26 +13,26 @@
   "Current directory.")
 
 (ert-deftest test-python-package ()
-  (find-file "test/fixtures/python/package/subpackage/module.py")
+  (find-file (f-join test-directory "fixtures/python/package/subpackage/module.py"))
   (should (s-equals? (relative-buffers-python-package)
                      "package.subpackage.module")))
 
 (ert-deftest test-python-package-init ()
-  (find-file "test/fixtures/python/package/__init__.py")
+  (find-file (f-join test-directory "fixtures/python/package/__init__.py"))
   (should (s-equals? (relative-buffers-python-package)
                      "package")))
 
 (ert-deftest test-python-script ()
-  (find-file "test/fixtures/python/nopackage.py")
+  (find-file (f-join test-directory "fixtures/python/nopackage.py"))
   (should (null (relative-buffers-python-package))))
 
 (ert-deftest test-dired-vc ()
-  (dired "test/fixtures/vc/subdir/dir")
+  (dired (f-join test-directory "fixtures/vc/subdir/dir"))
   (should (s-equals? (relative-buffers-directory)
                      "subdir/dir/")))
 
 (ert-deftest test-dired-vc-topdir ()
-  (dired "test/fixtures/vc/subdir")
+  (dired (f-join test-directory "fixtures/vc/subdir"))
   (should (s-equals? (relative-buffers-directory)
                      "subdir/")))
 
@@ -41,7 +41,7 @@
   (should (null (relative-buffers-directory))))
 
 (ert-deftest test-file-name-vc ()
-  (find-file "test/fixtures/vc/subdir/dir/test")
+  (find-file (f-join test-directory "fixtures/vc/subdir/dir/test"))
   (should (s-equals? (relative-buffers-file-name)
                      "subdir/dir/test")))
 
@@ -50,13 +50,13 @@
   (should (null (relative-buffers-file-name))))
 
 (ert-deftest test-file-name-without-file ()
-  (let ((default-directory (f-full "test/fixtures/vc/subdir/dir/test")))
+  (let ((default-directory (f-join test-directory "fixtures/vc/subdir/dir/test")))
     (switch-to-buffer (generate-new-buffer "foo"))
     (should (null (buffer-file-name)))
     (should (null (relative-buffers-file-name)))))
 
 (ert-deftest test-project-root ()
-  (find-file "test/fixtures/vc/subdir/dir/test")
+  (find-file (f-join test-directory "fixtures/vc/subdir/dir/test"))
   (should (s-equals? (relative-buffers-project-root)
                      (f-slash (f-join test-directory "fixtures" "vc")))))
 
@@ -73,8 +73,8 @@ README files on top of any vcs project root may cause this error."
   (unwind-protect
       (progn
         (global-relative-buffers-mode +1)
-        (find-file "test/fixtures/same-name/a/README.rst")
-        (find-file "test/fixtures/same-name/b/README.rst")
+        (find-file (f-join test-directory "fixtures/same-name/a/README.rst"))
+        (find-file (f-join test-directory "fixtures/same-name/b/README.rst"))
         (should (get-buffer "README.rst<2>")))
     (ignore-errors
       (global-relative-buffers-mode -1))))
