@@ -28,9 +28,7 @@
 
 ;;; Usage:
 
-;; Drop following line into your .emacs file:
-;;
-;;   (global-relative-buffers-mode)
+;; See the README for more details.
 
 ;;; Code:
 
