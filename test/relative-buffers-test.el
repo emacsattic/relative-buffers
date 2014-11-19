@@ -12,6 +12,8 @@
 (defvar test-directory (f-dirname load-file-name)
   "Current directory.")
 
+;; Python.
+
 (ert-deftest test-python-package ()
   (find-file (f-join test-directory "fixtures/python/package/subpackage/module.py"))
   (should (s-equals? (relative-buffers-python-package)
@@ -26,6 +28,8 @@
   (find-file (f-join test-directory "fixtures/python/nopackage.py"))
   (should (null (relative-buffers-python-package))))
 
+;; Dired.
+
 (ert-deftest test-dired-vc ()
   (dired (f-join test-directory "fixtures/vc/subdir/dir"))
   (should (s-equals? (relative-buffers-directory)
@@ -39,6 +43,8 @@
 (ert-deftest test-dired-simple-directory ()
   (dired (f-join (f-root) "tmp"))
   (should (null (relative-buffers-directory))))
+
+;; File.
 
 (ert-deftest test-file-name-vc ()
   (find-file (f-join test-directory "fixtures/vc/subdir/dir/test"))
@@ -55,6 +61,8 @@
     (should (null (buffer-file-name)))
     (should (null (relative-buffers-file-name)))))
 
+;; Project root.
+
 (ert-deftest test-project-root ()
   (find-file (f-join test-directory "fixtures/vc/subdir/dir/test"))
   (should (s-equals? (relative-buffers-project-root)
@@ -63,6 +71,8 @@
 (ert-deftest test-not-project-root ()
   (dired (f-join (f-root) "tmp"))
   (should (null (relative-buffers-project-root))))
+
+;; Global mode.
 
 (ert-deftest test-open-differnt-files-with-same-name ()
   "Check if renaming work correctly for complex layout.
