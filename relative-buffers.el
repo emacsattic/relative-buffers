@@ -37,8 +37,14 @@
 (require 's)
 (require 'f)
 
-(defvar relative-buffers-project-markers '(".git" ".hg")
-  "List of files marked it directory as project root.")
+(defgroup relative-buffers nil
+  "Emacs buffers naming convention."
+  :group 'convenience)
+
+(defcustom relative-buffers-project-markers '(".git" ".hg")
+  "List of files marked its directory as project root."
+  :group 'relative-buffers
+  :type '(repeat string))
 
 ;;;###autoload
 (define-minor-mode relative-buffers-mode
