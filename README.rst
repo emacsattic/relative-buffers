@@ -5,6 +5,10 @@ Relative buffers
     :target: https://travis-ci.org/proofit404/relative-buffers
     :alt: Build Status
 
+.. image:: https://coveralls.io/repos/proofit404/relative-buffers/badge.png
+    :target: https://coveralls.io/r/proofit404/relative-buffers
+    :alt: Coverage Status
+
 Emacs buffers naming convention.
 
 .. figure:: static/dired.png
