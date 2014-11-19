@@ -15,62 +15,59 @@
 ;; Python.
 
 (ert-deftest test-python-package ()
-  (find-file (f-join test-directory "fixtures/python/package/subpackage/module.py"))
-  (should (s-equals? (relative-buffers-python-package)
-                     "package.subpackage.module")))
+  (let ((path (f-join test-directory "fixtures/python/package/subpackage/module.py")))
+    (should (s-equals? (relative-buffers-python-package path)
+                       "package.subpackage.module"))))
 
 (ert-deftest test-python-package-init ()
-  (find-file (f-join test-directory "fixtures/python/package/__init__.py"))
-  (should (s-equals? (relative-buffers-python-package)
-                     "package")))
+  (let ((path (f-join test-directory "fixtures/python/package/__init__.py")))
+    (should (s-equals? (relative-buffers-python-package path)
+                       "package"))))
 
 (ert-deftest test-python-script ()
-  (find-file (f-join test-directory "fixtures/python/nopackage.py"))
-  (should (null (relative-buffers-python-package))))
+  (let ((path (f-join test-directory "fixtures/python/nopackage.py")))
+    (should (null (relative-buffers-python-package path)))))
 
 ;; Dired.
 
 (ert-deftest test-dired-vc ()
-  (dired (f-join test-directory "fixtures/vc/subdir/dir"))
-  (should (s-equals? (relative-buffers-directory)
-                     "subdir/dir/")))
+  (let ((path (f-join test-directory "fixtures/vc/subdir/dir")))
+    (should (s-equals? (relative-buffers-directory path)
+                       "subdir/dir/"))))
 
 (ert-deftest test-dired-vc-topdir ()
-  (dired (f-join test-directory "fixtures/vc/subdir"))
-  (should (s-equals? (relative-buffers-directory)
-                     "subdir/")))
+  (let ((path (f-join test-directory "fixtures/vc/subdir")))
+    (should (s-equals? (relative-buffers-directory path)
+                       "subdir/"))))
 
 (ert-deftest test-dired-simple-directory ()
-  (dired (f-join (f-root) "tmp"))
-  (should (null (relative-buffers-directory))))
+  (let ((path (f-join (f-root) "tmp")))
+    (should (null (relative-buffers-directory path)))))
 
 ;; File.
 
 (ert-deftest test-file-name-vc ()
-  (find-file (f-join test-directory "fixtures/vc/subdir/dir/test"))
-  (should (s-equals? (relative-buffers-file-name)
-                     "subdir/dir/test")))
+  (let ((path (f-join test-directory "fixtures/vc/subdir/dir/test")))
+    (should (s-equals? (relative-buffers-file-name path)
+                       "subdir/dir/test"))))
 
 (ert-deftest test-file-name-simple-file ()
-  (find-file (f-join (f-root) "tmp" "simple"))
-  (should (null (relative-buffers-file-name))))
+  (let ((path (f-join (f-root) "tmp" "simple")))
+    (should (null (relative-buffers-file-name path)))))
 
 (ert-deftest test-file-name-without-file ()
-  (let ((default-directory (f-join test-directory "fixtures/vc/subdir/dir/test")))
-    (switch-to-buffer (generate-new-buffer "foo"))
-    (should (null (buffer-file-name)))
-    (should (null (relative-buffers-file-name)))))
+  (should (null (relative-buffers-file-name nil))))
 
 ;; Project root.
 
 (ert-deftest test-project-root ()
-  (find-file (f-join test-directory "fixtures/vc/subdir/dir/test"))
-  (should (s-equals? (relative-buffers-project-root)
-                     (f-slash (f-join test-directory "fixtures" "vc")))))
+  (let ((path (f-join test-directory "fixtures/vc/subdir/dir/test")))
+    (should (s-equals? (relative-buffers-project-root path)
+                       (f-slash (f-join test-directory "fixtures" "vc"))))))
 
 (ert-deftest test-not-project-root ()
-  (dired (f-join (f-root) "tmp"))
-  (should (null (relative-buffers-project-root))))
+  (let ((path (f-join (f-root) "tmp")))
+    (should (null (relative-buffers-project-root path)))))
 
 ;; Global mode.
 

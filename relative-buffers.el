@@ -64,40 +64,50 @@ Project file and directories named relative to project root directory."
 
 (defun relative-buffers-name ()
   "Give current buffer a relative name."
-  (cl-case major-mode
-    (python-mode (relative-buffers-python-package))
-    (dired-mode (relative-buffers-directory))
-    (otherwise (relative-buffers-file-name))))
+  (let ((path (or (buffer-file-name) dired-directory)))
+    (cl-case major-mode
+      (python-mode (relative-buffers-python-package path))
+      (dired-mode (relative-buffers-directory path))
+      (otherwise (relative-buffers-file-name path)))))
 
-(defun relative-buffers-python-package ()
-  "Python module relative to package."
-  (when (file-exists-p "__init__.py")
-    (let (name-space-list)
-      (when (not (string= "__init__.py" (file-name-nondirectory (buffer-file-name))))
-        (setq name-space-list (list (file-name-sans-extension (buffer-file-name)))))
-      (cd (file-name-directory (buffer-file-name)))
-      (while (file-exists-p (file-truename "__init__.py"))
-        (add-to-list 'name-space-list (directory-file-name default-directory))
-        (cd ".."))
-      (cd (file-name-directory (buffer-file-name)))
-      (mapconcat 'file-name-nondirectory name-space-list "."))))
+(defun relative-buffers-python-package (file)
+  "Python module relative to package.
+FILE must be absolute python module file name."
+  (when file
+    (let* ((file-path (f-full file))
+           (init (f-join (f-dirname file-path) "__init__.py"))
+           (module (f-base (f-filename file-path)))
+           namespace parent)
+      (and (f-exists? init)
+           (not (s-equals? module "__init__"))
+           (push module namespace))
+      (while (file-exists-p init)
+        (setq parent (f-filename (f-dirname init)))
+        (setq init (f-join (f-dirname (f-dirname init)) "__init__.py"))
+        (push parent namespace))
+      (when namespace
+        (s-join "." namespace)))))
 
-(defun relative-buffers-directory ()
-  "Directory relative to project root."
-  (let ((root (relative-buffers-project-root))
-        (directory (f-full dired-directory)))
-    (when (and root (f-ancestor-of? root directory))
-      (s-chop-prefix root directory))))
+(defun relative-buffers-directory (directory)
+  "Directory relative to project root.
+DIRECTORY must be specified as absolute path."
+  (let ((root (relative-buffers-project-root directory))
+        (directory-path (f-full directory)))
+    (when (and root (f-ancestor-of? root directory-path))
+      (s-chop-prefix root directory-path))))
 
-(defun relative-buffers-file-name ()
-  "File name relative to project root."
-  (--when-let (relative-buffers-project-root)
-    (s-chop-prefix it (buffer-file-name))))
+(defun relative-buffers-file-name (file)
+  "File name relative to project root.
+FILE must be specified as absolute path."
+  (when file
+    (let ((file-path (f-full file)))
+      (--when-let (relative-buffers-project-root file-path)
+        (s-chop-prefix it file-path)))))
 
-(defun relative-buffers-project-root ()
-  "Return project root for different VCS."
+(defun relative-buffers-project-root (path)
+  "Return project root for PATH in different VCS."
   (let* ((markers relative-buffers-project-markers)
-         (projects (--map (locate-dominating-file default-directory it) markers))
+         (projects (--map (locate-dominating-file path it) markers))
          (roots (-remove 'null projects))
          (dipper-roots (-sort 'f-descendant-of? roots))
          (root (car dipper-roots)))
