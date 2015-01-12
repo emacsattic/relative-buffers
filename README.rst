@@ -1,13 +1,20 @@
-Relative buffers
-================
-
-.. image:: https://travis-ci.org/proofit404/relative-buffers.png
+.. |travis| image:: https://travis-ci.org/proofit404/relative-buffers.png
     :target: https://travis-ci.org/proofit404/relative-buffers
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/proofit404/relative-buffers/badge.png
+.. |coveralls| image:: https://coveralls.io/repos/proofit404/relative-buffers/badge.png
     :target: https://coveralls.io/r/proofit404/relative-buffers
     :alt: Coverage Status
+
+.. |melpa| image:: http://melpa.org/packages/relative-buffers-badge.svg
+    :target: http://melpa.org/#/relative-buffers
+    :alt: Melpa
+
+================
+Relative buffers
+================
+
+|travis| |coveralls| |melpa|
 
 Emacs buffers naming convention.
 
