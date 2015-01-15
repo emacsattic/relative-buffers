@@ -1,8 +1,8 @@
 ;;; relative-buffers.el --- Emacs buffers naming convention
 
-;; Copyright (C) 2014-2015 by Malyshev Artem
+;; Copyright (C) 2014-2015 by Artem Malyshev
 
-;; Author: Malyshev Artem <proofit404@gmail.com>
+;; Author: Artem Malyshev <proofit404@gmail.com>
 ;; URL: https://github.com/proofit404/relative-buffers
 ;; Version: 0.0.1
 ;; Package-Requires: ((cl-lib "0.5") (dash "2.6.0") (s "1.9.0") (f "0.16.2"))
