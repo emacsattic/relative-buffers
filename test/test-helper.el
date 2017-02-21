@@ -14,6 +14,4 @@
 
 (undercover "*.el")
 
-(provide 'test-helper)
-
 ;;; test-helper.el ends here
