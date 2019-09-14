@@ -44,6 +44,12 @@
   (let ((path (f-join (f-root) "tmp")))
     (should (null (relative-buffers-directory path)))))
 
+(ert-deftest test-dired-vc-with-project-prefix ()
+  (let ((relative-buffers-project-prefix t)
+        (path (f-join test-directory "fixtures/vc/subdir/dir")))
+    (should (s-equals? (relative-buffers-directory path)
+                       "vc/subdir/dir/"))))
+
 ;; File.
 
 (ert-deftest test-file-name-vc ()
@@ -57,6 +63,12 @@
 
 (ert-deftest test-file-name-without-file ()
   (should (null (relative-buffers-file-name nil))))
+
+(ert-deftest test-file-name-vc-with-project-prefix ()
+  (let ((relative-buffers-project-prefix t)
+        (path (f-join test-directory "fixtures/vc/subdir/dir/test")))
+    (should (s-equals? (relative-buffers-file-name path)
+                       "vc/subdir/dir/test"))))
 
 ;; Project root.
 
