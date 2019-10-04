@@ -31,40 +31,56 @@
 ;; Dired.
 
 (ert-deftest test-dired-vc ()
-  (let ((path (f-join test-directory "fixtures/vc/subdir/dir")))
+  (let ((relative-buffers-project-prefix nil)
+        (path (f-join test-directory "fixtures/vc/subdir/dir")))
     (should (s-equals? (relative-buffers-directory path)
                        "subdir/dir/"))))
 
 (ert-deftest test-dired-vc-topdir ()
-  (let ((path (f-join test-directory "fixtures/vc/subdir")))
+  (let ((relative-buffers-project-prefix nil)
+        (path (f-join test-directory "fixtures/vc/subdir")))
     (should (s-equals? (relative-buffers-directory path)
                        "subdir/"))))
 
 (ert-deftest test-dired-simple-directory ()
-  (let ((path (f-join (f-root) "tmp")))
+  (let ((relative-buffers-project-prefix nil)
+        (path (f-join (f-root) "tmp")))
     (should (null (relative-buffers-directory path)))))
 
-(ert-deftest test-dired-vc-with-project-prefix ()
+(ert-deftest test-project-prefix-dired-vc ()
   (let ((relative-buffers-project-prefix t)
         (path (f-join test-directory "fixtures/vc/subdir/dir")))
     (should (s-equals? (relative-buffers-directory path)
                        "vc/subdir/dir/"))))
 
+(ert-deftest test-project-prefix-dired-simple-directory ()
+  (let ((relative-buffers-project-prefix t)
+        (path (f-join (f-root) "tmp")))
+    (should (null (relative-buffers-directory path)))))
+
 ;; File.
 
 (ert-deftest test-file-name-vc ()
-  (let ((path (f-join test-directory "fixtures/vc/subdir/dir/test")))
+  (let ((relative-buffers-project-prefix nil)
+        (path (f-join test-directory "fixtures/vc/subdir/dir/test")))
     (should (s-equals? (relative-buffers-file-name path)
                        "subdir/dir/test"))))
 
 (ert-deftest test-file-name-simple-file ()
-  (let ((path (f-join (f-root) "tmp" "simple")))
+  (let ((relative-buffers-project-prefix nil)
+        (path (f-join (f-root) "tmp" "simple")))
     (should (null (relative-buffers-file-name path)))))
 
 (ert-deftest test-file-name-without-file ()
-  (should (null (relative-buffers-file-name nil))))
+  (let ((relative-buffers-project-prefix nil))
+    (should (null (relative-buffers-file-name nil)))))
 
-(ert-deftest test-file-name-vc-with-project-prefix ()
+(ert-deftest test-project-prefix-file-name-simple-file ()
+  (let ((relative-buffers-project-prefix t)
+        (path (f-join (f-root) "tmp" "simple")))
+    (should (null (relative-buffers-file-name path)))))
+
+(ert-deftest test-project-prefix-file-name-vc ()
   (let ((relative-buffers-project-prefix t)
         (path (f-join test-directory "fixtures/vc/subdir/dir/test")))
     (should (s-equals? (relative-buffers-file-name path)
@@ -73,12 +89,14 @@
 ;; Project root.
 
 (ert-deftest test-project-root ()
-  (let ((path (f-join test-directory "fixtures/vc/subdir/dir/test")))
+  (let ((relative-buffers-project-prefix nil)
+        (path (f-join test-directory "fixtures/vc/subdir/dir/test")))
     (should (s-equals? (relative-buffers-project-root path)
                        (f-slash (f-join test-directory "fixtures" "vc"))))))
 
 (ert-deftest test-not-project-root ()
-  (let ((path (f-join (f-root) "tmp")))
+  (let ((relative-buffers-project-prefix nil)
+        (path (f-join (f-root) "tmp")))
     (should (null (relative-buffers-project-root path)))))
 
 ;; Global mode.
@@ -89,7 +107,8 @@
 - each file has same relative path
 - each file placed in different project
 README files on top of any vcs project root may cause this error."
-  (let ((uniquify-buffer-name-style nil))
+  (let ((relative-buffers-project-prefix nil)
+        (uniquify-buffer-name-style nil))
     (unwind-protect
         (progn
           (global-relative-buffers-mode +1)

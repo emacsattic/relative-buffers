@@ -98,18 +98,23 @@ FILE must be absolute python module file name."
 DIRECTORY must be specified as absolute path."
   (let* ((root (relative-buffers-project-root directory))
          (directory-path (f-full directory))
-         (prefix (when relative-buffers-project-prefix (concat (file-name-nondirectory (directory-file-name (relative-buffers-project-root directory-path))) "/"))))
-    (when (and root (f-ancestor-of? root directory-path))
-      (concat prefix (s-chop-prefix root directory-path)))))
+         (prefix (if (and relative-buffers-project-prefix root)
+                     (file-name-directory (directory-file-name root))
+                   root)))
+    (when (and prefix (f-ancestor-of? root directory-path))
+      (s-chop-prefix prefix directory-path))))
 
 (defun relative-buffers-file-name (file)
   "File name relative to project root.
 FILE must be specified as absolute path."
   (when file
-    (let* ((file-path (f-full file))
-           (prefix (when relative-buffers-project-prefix (concat (file-name-nondirectory (directory-file-name (relative-buffers-project-root file-path))) "/"))))
-      (--when-let (relative-buffers-project-root file-path)
-        (concat prefix (s-chop-prefix it file-path))))))
+    (let* ((root (relative-buffers-project-root file))
+           (file-path (f-full file))
+           (prefix (if (and relative-buffers-project-prefix root)
+                       (file-name-directory (directory-file-name root))
+                     root)))
+      (when prefix
+        (s-chop-prefix prefix file-path)))))
 
 (defun relative-buffers-project-root (path)
   "Return project root for PATH in different VCS."
