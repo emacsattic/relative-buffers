@@ -14,6 +14,4 @@
 
 (global-relative-buffers-mode)
 
-(provide 'init)
-
 ;;; init.el ends here
